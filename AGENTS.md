@@ -37,3 +37,4 @@
 ## Security & Configuration Tips
 - Do not commit secrets. Copy `.env.example` to `.env` and set required keys (LLM/tool APIs). `.env` is git-ignored.
 - Prefer `uv run ...` to ensure the virtual env and pinned deps are used.
+- **STRICT RULE: AI assistants must NEVER read, view, or access `.env` files.** When environment configuration changes are needed, always create or update `.env.example` with placeholder values and instruct the user to copy the values into `.env` manually.

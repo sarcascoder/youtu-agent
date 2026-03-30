@@ -85,14 +85,14 @@ class SwitchAgentContent(BaseModel):
     type: Literal["switch_agent"] = "switch_agent"
     ok: bool
     name: str
-    agent_type: Literal["simple", "orchestra", "orchestrator", "other"]
+    agent_type: Literal["simple", "orchestra", "orchestrator", "workforce", "other"] | str | None = None
     sub_agents: list[str] | None = None
 
 
 class InitContent(BaseModel):
     type: Literal["init"] = "init"
     default_agent: str
-    agent_type: Literal["simple", "orchestra", "orchestrator", "other"]
+    agent_type: Literal["simple", "orchestra", "orchestrator", "workforce", "other"]
     sub_agents: list[str] | None = None
 
 

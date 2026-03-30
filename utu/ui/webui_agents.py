@@ -17,6 +17,7 @@ from utu.agents.orchestra import OrchestraStreamEvent
 from utu.agents.orchestra_agent import OrchestraAgent
 from utu.agents.orchestrator import OrchestratorStreamEvent
 from utu.agents.simple_agent import SimpleAgent
+from utu.agents.workforce_agent import WorkforceAgent
 from utu.config import AgentConfig
 from utu.config.loader import ConfigLoader
 from utu.meta.simple_agent_generator import SimpleAgentGeneratedEvent, SimpleAgentGenerator
@@ -123,6 +124,10 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         elif isinstance(self.agent, OrchestratorAgent):
             agent_type = "orchestrator"
             sub_agents = [w["name"] for w in self.agent.config.orchestrator_workers_info]
+        elif isinstance(self.agent, WorkforceAgent):
+            agent_type = "workforce"
+            sub_agents = list(self.agent.config.workers.keys())
+            sub_agents.extend(["PlannerAgent", "AssignerAgent", "ExecutorAgent", "AnswererAgent"])
         elif isinstance(self.agent, SimpleAgent):
             agent_type = "simple"
         else:
@@ -244,6 +249,8 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             # WARN: deprecated
             self.agent = OrchestraAgent(config=config)
             # await self.agent.build()
+        elif config.type == "workforce":
+            self.agent = WorkforceAgent(config=config)
         else:
             raise ValueError(f"Unsupported agent type: {config.type}")
 
